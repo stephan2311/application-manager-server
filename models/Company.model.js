@@ -14,11 +14,6 @@ const companyModel = new Schema({
         zip: String,
         country: String,
     },
-    contact: [{
-        name: String,
-        mail: String,
-        phone: Number
-    }],
 });
 
 module.exports = model('Company', companyModel);

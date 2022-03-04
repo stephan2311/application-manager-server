@@ -23,7 +23,12 @@ const applicationModel = new Schema(
             default: "submitted",
             required: true
         },
-        company: {type: Schema.Types.ObjectId, ref: 'Company'}
+        company: {type: Schema.Types.ObjectId, ref: 'Company'},
+        contacts: [{
+            name: String,
+            mail: String,
+            phone: Number
+        }],
     },
     {
         timestamps: true,

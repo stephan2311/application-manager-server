@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Application = require("../models/Application.model");
+const Company = require("../models/Company.model");
 const mongoose = require('mongoose');
 
 router.get('/', (req, res, next) => {
@@ -37,11 +38,14 @@ router.put('/:applicationId', (req, res, next) => {
 router.post("/", (req, res) => {
 
     const applicationDetails = {
-        position: req.body.position,  
+        position: req.body.position,
         dateApplied: req.body.dateApplied,
         job_post_url: req.body.job_post_url,
         channel: req.body.channel,
         status: req.body.status,
+        company: req.body.company,
+        contacts: req.body.contacts,
+        companyId: req.body.companyId
     }
 
     Application.create(applicationDetails)

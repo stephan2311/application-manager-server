@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 
 router.get('/', (req, res, next) => {
     Company.find()
-        .populate('applications')
         .then(allCompanies => res.json(allCompanies))
         .catch(err => res.json(err));
 });
@@ -37,14 +36,12 @@ router.put('/:companyId', (req, res, next) => {
         .catch(error => res.json(error));
 });
 
-router.post("/create-company", (req, res) => {
+router.post("/", (req, res) => {
 
     const companyDetails = {
         name: req.body.name,  
         website: req.body.website,
         address: req.body.address,
-        contact: req.body.contact,
-        applications: req.body.applications
     }
 
     Company.create(companyDetails)
