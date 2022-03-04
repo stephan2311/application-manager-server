@@ -14,7 +14,7 @@ router.get("/loggedin", (req, res) => {
 });
 
 router.post("/signup", (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, email } = req.body;
 
   if (!username) {
     return res
@@ -26,6 +26,12 @@ router.post("/signup", (req, res) => {
     return res.status(400).json({
       errorMessage: "Your password needs to be at least 8 characters long.",
     });
+  }
+
+  if (!email) {
+    return res
+      .status(400)
+      .json({ errorMessage: "Please provide your e-mail address." });
   }
 
   //   ! This use case is using a regular expression to control for special characters and min length

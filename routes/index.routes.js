@@ -9,7 +9,7 @@ router.get("/", (req, res, next) => {
 });
 
 router.use("/auth", authRoutes);
-router.use("/applications", isAuthenticated, applicationRoutes);
-router.use("/companies", isAuthenticated, companyRoutes);
+router.use("/applications", applicationRoutes);
+router.use("/companies", companyRoutes);
 
 module.exports = router;

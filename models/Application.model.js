@@ -7,14 +7,27 @@ const applicationModel = new Schema(
             type: String,
             required: true
         },
-        applied: Date,
-        channel:["Personal Intro/Recommendation", "Mail", "LinkedIn", "Website", "Others"],
-        status: ["submitted", "pending", "reminder", "offer", "rejected"],
-        company: { type: Schema.Types.ObjectId, ref: 'Company' }
+        dateApplied: {
+            type: Date,
+            default: Date.now
+        },
+        job_post_url: String,
+        channel: {
+            type: String,
+            enum: ["Personal Intro/Recommendation", "Mail", "LinkedIn", "Website", "Others"],
+            required: true
+        },
+        status: {
+            type: String,
+            enum: ["submitted", "pending", "reminder", "offer", "rejected"],
+            default: "submitted",
+            required: true
+        },
+        company: {type: Schema.Types.ObjectId, ref: 'Company'}
     },
     {
         timestamps: true,
     }
 );
 
-module.exports = model('Task', applicationModel);
+module.exports = model('Application', applicationModel);

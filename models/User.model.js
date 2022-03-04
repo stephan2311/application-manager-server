@@ -4,16 +4,21 @@ const userSchema = new Schema(
   {
     username: {
       type: String,
-      unique: true
+      unique: true,
+      required: true,
     },
-    password: String,
-    mail: String,
+    password: {
+      type: String,
+      required: true,
+    },
+    email: String,
     address: {
       street: String,
       city: String,
       zip: String,
       country: String,
     },
+    company: [{type: Schema.Types.ObjectId, ref: 'Company'}]
   },
   {
     timestamps: true,

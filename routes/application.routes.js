@@ -1,11 +1,9 @@
 const router = require("express").Router();
 const Application = require("../models/Application.model");
-const Company = require('../models/Company.model');
 const mongoose = require('mongoose');
 
 router.get('/', (req, res, next) => {
     Application.find()
-        .populate('company')
         .then(allApplications => res.json(allApplications))
         .catch(err => res.json(err));
 });
@@ -19,7 +17,6 @@ router.get('/:applicationId', (req, res, next) => {
     }
 
     Application.findById(applicationId)
-        .populate('tasks')
         .then(application => res.status(200).json(application))
         .catch(error => res.json(error));
 });
@@ -37,14 +34,14 @@ router.put('/:applicationId', (req, res, next) => {
         .catch(error => res.json(error));
 });
 
-router.post("/create-application", (req, res) => {
+router.post("/", (req, res) => {
 
     const applicationDetails = {
         position: req.body.position,  
-        applied: req.body.applied,
+        dateApplied: req.body.dateApplied,
+        job_post_url: req.body.job_post_url,
         channel: req.body.channel,
         status: req.body.status,
-        company: req.body.company
     }
 
     Application.create(applicationDetails)
@@ -52,9 +49,9 @@ router.post("/create-application", (req, res) => {
             res.status(201).json(applicationCreated)
         })
         .catch(err => {
-            console.log("error creating a new project", err);
+            console.log("error creating a new application", err);
             res.status(500).json({
-                message: "error creating a new project",
+                message: "error creating a new application",
                 error: err
             });
         })
@@ -71,7 +68,7 @@ router.delete('/:applicationId', (req, res, next) => {
     }
 
     Application.findByIdAndRemove(applicationId)
-        .then(() => res.json({ message: `Application with ${applicationId} is removed successfully.` }))
+        .then(() => res.json({ message: `Application with ID ${applicationId} is removed successfully.` }))
         .catch(error => res.json(error));
 });
 

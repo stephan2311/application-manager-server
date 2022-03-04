@@ -4,6 +4,7 @@ const { Schema, model } = mongoose;
 const companyModel = new Schema({
     name: {
         type: String,
+        unique: true,
         required: true
     },
     website: String,
@@ -18,7 +19,6 @@ const companyModel = new Schema({
         mail: String,
         phone: Number
     }],
-    applications: [{ type: Schema.Types.ObjectId, ref: 'Application' }]
 });
 
-module.exports = model('Task', companyModel);
+module.exports = model('Company', companyModel);
