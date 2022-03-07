@@ -18,7 +18,19 @@ router.get('/:companyId', (req, res, next) => {
     }
 
     Company.findById(companyId)
-        .populate('applications')
+        .then(company => res.status(200).json(company))
+        .catch(error => res.json(error));
+});
+
+router.get('/:companyId', (req, res, next) => {
+    const { companyId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(companyId)) {
+        res.status(400).json({ message: 'Specified id is not valid' });
+        return;
+    }
+
+    Company.findById(companyId)
         .then(company => res.status(200).json(company))
         .catch(error => res.json(error));
 });
@@ -39,14 +51,14 @@ router.put('/:companyId', (req, res, next) => {
 router.post("/", (req, res) => {
 
     const companyDetails = {
-        name: req.body.name,  
+        name: req.body.name,
         website: req.body.website,
         address: req.body.address,
     }
 
     Company.create(companyDetails)
-        .then(companyCreated => {
-            res.status(201).json(companyCreated)
+        .then(newCompany => {
+            res.status(201).json(newCompany)
         })
         .catch(err => {
             console.log("error creating a new company", err);

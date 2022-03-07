@@ -29,6 +29,7 @@ const applicationModel = new Schema(
             mail: String,
             phone: Number
         }],
+        user: {type: Schema.Types.ObjectId, ref: 'User'},
     },
     {
         timestamps: true,

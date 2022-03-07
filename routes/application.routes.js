@@ -1,11 +1,22 @@
 const router = require("express").Router();
 const Application = require("../models/Application.model");
 const Company = require("../models/Company.model");
+const User = require("../models/User.model");
 const mongoose = require('mongoose');
+const {isAuthenticated} = require('../middleware/jwt.middleware');
+// const { canViewApplication } = require("../middleware/user.middleware");
 
-router.get('/', (req, res, next) => {
-    Application.find()
-        .then(allApplications => res.json(allApplications))
+
+router.get('/', isAuthenticated, (req, res, next) => {
+
+    const userId = req.payload._id;
+ 
+    Application.find({user: userId})
+        .populate("company")
+        .populate("user")
+        .then(allApplications => {
+            console.log(allApplications)
+            res.json(allApplications)})
         .catch(err => res.json(err));
 });
 
@@ -35,8 +46,9 @@ router.put('/:applicationId', (req, res, next) => {
         .catch(error => res.json(error));
 });
 
-router.post("/", (req, res) => {
+router.post("/", isAuthenticated, (req, res) => {
 
+    const userId = req.payload._id;
     const applicationDetails = {
         position: req.body.position,
         dateApplied: req.body.dateApplied,
@@ -45,12 +57,12 @@ router.post("/", (req, res) => {
         status: req.body.status,
         company: req.body.company,
         contacts: req.body.contacts,
-        companyId: req.body.companyId
+        user: userId
     }
 
     Application.create(applicationDetails)
-        .then(applicationCreated => {
-            res.status(201).json(applicationCreated)
+        .then(newApplication => {
+            return User.findByIdAndUpdate(userId, { $push: { applications: newApplication._id } });
         })
         .catch(err => {
             console.log("error creating a new application", err);

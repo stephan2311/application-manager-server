@@ -18,7 +18,7 @@ const userSchema = new Schema(
       zip: String,
       country: String,
     },
-    companies: [{type: Schema.Types.ObjectId, ref: 'Company'}]
+    applications: [{type: Schema.Types.ObjectId, ref: 'Application'}]
   },
   {
     timestamps: true,
