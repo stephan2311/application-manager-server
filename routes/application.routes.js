@@ -60,10 +60,14 @@ router.post("/", isAuthenticated, (req, res) => {
         user: userId
     }
 
+    let applicationCreated;
+
     Application.create(applicationDetails)
         .then(newApplication => {
+            applicationCreated = newApplication;
             return User.findByIdAndUpdate(userId, { $push: { applications: newApplication._id } });
         })
+        .then(() => res.status(201).json(applicationCreated) )
         .catch(err => {
             console.log("error creating a new application", err);
             res.status(500).json({
