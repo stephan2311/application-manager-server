@@ -24,11 +24,11 @@ const applicationModel = new Schema(
             required: true
         },
         company: {type: Schema.Types.ObjectId, ref: 'Company'},
-        contacts: [{
+        contact: {
             name: String,
             mail: String,
             phone: Number
-        }],
+        },
         user: {type: Schema.Types.ObjectId, ref: 'User'},
         comment: String,
     },
