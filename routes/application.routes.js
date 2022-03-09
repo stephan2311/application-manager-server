@@ -57,6 +57,7 @@ router.post("/", isAuthenticated, (req, res) => {
         status: req.body.status,
         company: req.body.company,
         contacts: req.body.contacts,
+        comment: req.body.comment,
         user: userId
     }
 

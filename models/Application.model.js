@@ -30,6 +30,7 @@ const applicationModel = new Schema(
             phone: Number
         }],
         user: {type: Schema.Types.ObjectId, ref: 'User'},
+        comment: String,
     },
     {
         timestamps: true,
