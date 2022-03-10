@@ -2,6 +2,8 @@ const router = require("express").Router();
 const Application = require("../models/Application.model");
 const Company = require('../models/Company.model');
 const mongoose = require('mongoose');
+const {isAuthenticated} = require('../middleware/jwt.middleware');
+
 
 router.get('/', (req, res, next) => {
     Company.find()
@@ -9,18 +11,6 @@ router.get('/', (req, res, next) => {
         .catch(err => res.json(err));
 });
 
-router.get('/:companyId', (req, res, next) => {
-    const { companyId } = req.params;
-
-    if (!mongoose.Types.ObjectId.isValid(companyId)) {
-        res.status(400).json({ message: 'Specified id is not valid' });
-        return;
-    }
-
-    Company.findById(companyId)
-        .then(company => res.status(200).json(company))
-        .catch(error => res.json(error));
-});
 
 router.get('/:companyId', (req, res, next) => {
     const { companyId } = req.params;
@@ -35,7 +25,7 @@ router.get('/:companyId', (req, res, next) => {
         .catch(error => res.json(error));
 });
 
-router.put('/:companyId', (req, res, next) => {
+router.put('/:companyId', isAuthenticated, (req, res, next) => {
     const { companyId } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(companyId)) {
@@ -48,7 +38,7 @@ router.put('/:companyId', (req, res, next) => {
         .catch(error => res.json(error));
 });
 
-router.post("/", (req, res) => {
+router.post("/", isAuthenticated, (req, res) => {
 
     const companyDetails = {
         name: req.body.name,
@@ -71,7 +61,7 @@ router.post("/", (req, res) => {
 })
 
 
-router.delete('/:companyId', (req, res, next) => {
+router.delete('/:companyId', isAuthenticated, (req, res, next) => {
     const { companyId } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(companyId)) {

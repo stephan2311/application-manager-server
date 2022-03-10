@@ -20,7 +20,7 @@ router.get('/', isAuthenticated, (req, res, next) => {
         .catch(err => res.json(err));
 });
 
-router.get('/:applicationId', (req, res, next) => {
+router.get('/:applicationId', isAuthenticated, (req, res, next) => {
     const { applicationId } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(applicationId)) {
@@ -33,7 +33,7 @@ router.get('/:applicationId', (req, res, next) => {
         .catch(error => res.json(error));
 });
 
-router.put('/:applicationId', (req, res, next) => {
+router.put('/:applicationId', isAuthenticated, (req, res, next) => {
     const { applicationId } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(applicationId)) {
@@ -49,6 +49,7 @@ router.put('/:applicationId', (req, res, next) => {
 router.post("/", isAuthenticated, (req, res) => {
 
     const userId = req.payload._id;
+    
     const applicationDetails = {
         position: req.body.position,
         dateApplied: req.body.dateApplied,
@@ -80,7 +81,7 @@ router.post("/", isAuthenticated, (req, res) => {
 })
 
 
-router.delete('/:applicationId', (req, res, next) => {
+router.delete('/:applicationId', isAuthenticated, (req, res, next) => {
     const { applicationId } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(applicationId)) {
