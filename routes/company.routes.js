@@ -2,7 +2,7 @@ const router = require("express").Router();
 const Application = require("../models/Application.model");
 const Company = require('../models/Company.model');
 const mongoose = require('mongoose');
-const {isAuthenticated} = require('../middleware/jwt.middleware');
+const { isAuthenticated } = require('../middleware/jwt.middleware');
 
 
 router.get('/', (req, res, next) => {
@@ -63,15 +63,35 @@ router.post("/", isAuthenticated, (req, res) => {
 
 router.delete('/:companyId', isAuthenticated, (req, res, next) => {
     const { companyId } = req.params;
+    let allApplications;
+
+    console.log("Entered Route")
 
     if (!mongoose.Types.ObjectId.isValid(companyId)) {
         res.status(400).json({ message: 'Specified id is not valid' });
         return;
     }
 
-    Company.findByIdAndRemove(companyId)
-        .then(() => res.json({ message: `Company with ID ${companyId} is removed successfully.` }))
-        .catch(error => res.json(error));
+    console.log("Step 2")
+
+    Application.find({ company: companyId })
+        .then(responseFromDB => {
+            allApplications = responseFromDB
+            
+            if (responseFromDB.length === 0) {
+                console.log(allApplications)
+                return Company.findByIdAndRemove(companyId);
+            } else {
+                throw new Error("Can not delete a company if it has applications")
+            }
+        })
+        .then( (companyId) => {
+            res.json({ message: `Company with ID ${companyId} is removed successfully.` })
+        })
+        .catch(err => res.status(500).json({
+            message: "error deleting a company, make sure theres no applications for that company",
+            error: err
+        }));
 });
 
 module.exports = router;
