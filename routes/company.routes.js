@@ -65,14 +65,10 @@ router.delete('/:companyId', isAuthenticated, (req, res, next) => {
     const { companyId } = req.params;
     let allApplications;
 
-    console.log("Entered Route")
-
     if (!mongoose.Types.ObjectId.isValid(companyId)) {
         res.status(400).json({ message: 'Specified id is not valid' });
         return;
     }
-
-    console.log("Step 2")
 
     Application.find({ company: companyId })
         .then(responseFromDB => {
