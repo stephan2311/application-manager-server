@@ -12,7 +12,8 @@ const jobsModel = new Schema({
     candidate_required_location: String,
     salary: String,
     description: String,
-}
+},
+    { timestamps: true }
 );
 
 module.exports = model('Jobs', jobsModel);

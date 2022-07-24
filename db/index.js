@@ -1,15 +1,8 @@
-// ℹ️ package responsible to make the connection with mongodb
-// https://www.npmjs.com/package/mongoose
 const mongoose = require("mongoose");
 const axios = require('axios');
 const cron = require('node-cron');
 const db = mongoose.connection;
 const Jobs = require('../models/Jobs.model');
-
-
-
-// ℹ️ Sets the MongoDB URI for our app to have access to it.
-// If no env has been set, we dynamically set it to whatever the folder name was upon the creation of the app
 
 const MONGO_URI = require("../utils/consts");
 
@@ -71,9 +64,5 @@ cron.schedule('* 6,16 * * *', function () {
 
     upData.save();
   }
-
-  let monthAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-  Jobs.deleteMany({ publication_date: { '$lt': monthAgo } });
-  console.log('Jobs successfully deleted');
 
 });
