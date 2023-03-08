@@ -17,7 +17,7 @@ mongoose
     console.error("Error connecting to mongo: ", err);
   });
 
-cron.schedule('* 6,16 * * *', function () {
+// cron.schedule('* 6,16 * * *', function () {
   console.log('Cron job running');
   axios.get('https://remotive.io/api/remote-jobs?limit=50')
     .then(function (response) {
@@ -65,4 +65,4 @@ cron.schedule('* 6,16 * * *', function () {
     upData.save();
   }
 
-});
+// });
